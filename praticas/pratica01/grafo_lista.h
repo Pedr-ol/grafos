@@ -14,7 +14,10 @@ typedef struct {
 } GrafoLista;
 
 GrafoLista criar_grafo_lista(int n);
-int grau(GrafoLista *lista);
-void sao_adjacentes(GrafoLista *lista);
-
+void inserir_aresta_lista(GrafoLista *lista, int u, int v);
+void remover_aresta_lista(GrafoLista *lista, int u, int v);
+int grau_lista(GrafoLista *lista, int u);
+int sao_adjacentes_lista(GrafoLista *lista, int u, int v);
+void liberar_grafo_lista(GrafoLista *lista);
+void exibir_lista(GrafoLista *lista);
 #endif

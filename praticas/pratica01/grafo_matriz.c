@@ -4,7 +4,8 @@
 
 GrafoMatriz *criar_grafo_matriz(int n)
 {
-    if (n <= 0){
+    if (n <= 0)
+    {
         return NULL;
     }
     GrafoMatriz *matriz = malloc(sizeof(GrafoMatriz));
@@ -25,9 +26,13 @@ GrafoMatriz *criar_grafo_matriz(int n)
     {
         matriz->adj[i] = malloc(n * sizeof(int));
 
-        if(matriz->adj[i] == NULL) {
-            for (int j = 0; j<i; j++)
+        if (matriz->adj[i] == NULL)
+        {
+            for (int j = 0; j < i; j++)
+            {
                 free(matriz->adj[j]);
+            }
+
             free(matriz->adj);
             free(matriz);
 
@@ -35,7 +40,6 @@ GrafoMatriz *criar_grafo_matriz(int n)
         }
         for (int j = 0; j < n; j++)
             matriz->adj[i][j] = 0;
-            
     }
     return matriz;
 }
@@ -46,7 +50,7 @@ void inserir_aresta(GrafoMatriz *matriz, int u, int v)
     matriz->adj[v][u] = 1;
 }
 
-void remover_aresta(GrafoMatriz *matriz, int u, int v) 
+void remover_aresta(GrafoMatriz *matriz, int u, int v)
 {
     matriz->adj[u][v] = 0;
     matriz->adj[v][u] = 0;
@@ -64,6 +68,28 @@ void exibir_matriz(GrafoMatriz *matriz)
     }
 }
 
-// int grau_matriz(GrafoMatriz *matriz) {}
-// int sao_adjacentes_matriz(GrafoMatriz *matriz) {}
-// void liberar_grafo(GrafoMatriz *matriz) {}
+int grau_matriz(GrafoMatriz *matriz, int u)
+{
+    int grau = 0;
+    for (int v = 0; v < matriz->n; v++)
+    {
+        grau += matriz->adj[u][v];
+    }
+    return grau;
+}
+
+int sao_adjacentes_matriz(GrafoMatriz *matriz, int u, int v)
+{
+    return matriz->adj[u][v];
+}
+
+void liberar_grafo(GrafoMatriz *matriz)
+{
+    for (int i = 0; i < matriz->n; i++)
+    {
+        free(matriz->adj[i]);
+    }
+
+    free(matriz->adj);
+    free(matriz);
+}
