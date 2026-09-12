@@ -53,5 +53,6 @@ int main() {
     imprimir("DFS:", dfs2, tam_dfs2);
     imprimir("Kahn:", kahn2, tam_kahn2);
 
+    
     return 0;
 }

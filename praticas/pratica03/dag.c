@@ -27,6 +27,7 @@ static int dfs(GrafoLista *g, int u, int *cor, int *res, int *pos) {
     return 0;
 }
 
+
 // 1. Ordenação Topológica DFS
 int* ordenacao_topologica_dfs(GrafoLista *g, int *tamanho) {
     int n = g->num_vertices;
