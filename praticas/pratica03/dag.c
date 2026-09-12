@@ -15,11 +15,11 @@ void adicionar_aresta(GrafoLista* g, int u, int v) {
     g->listas[u] = novo;
 }
 
-// DFS Auxiliar: 0=branco, 1=cinza (ciclo), 2=preto
+// DFS Auxiliar (0: nao visitado, 1: em progresso, 2: concluido)
 static int dfs(GrafoLista *g, int u, int *cor, int *res, int *pos) {
     cor[u] = 1;
     for (No* p = g->listas[u]; p; p = p->prox) {
-        if (cor[p->vertice] == 1) return 1; // Ciclo encontrado
+        if (cor[p->vertice] == 1) return 1; // Ciclo!
         if (cor[p->vertice] == 0 && dfs(g, p->vertice, cor, res, pos)) return 1;
     }
     cor[u] = 2;
@@ -27,8 +27,6 @@ static int dfs(GrafoLista *g, int u, int *cor, int *res, int *pos) {
     return 0;
 }
 
-
-// 1. Ordenação Topológica DFS
 int* ordenacao_topologica_dfs(GrafoLista *g, int *tamanho) {
     int n = g->num_vertices;
     int *cor = calloc(n, sizeof(int));
@@ -37,15 +35,17 @@ int* ordenacao_topologica_dfs(GrafoLista *g, int *tamanho) {
 
     for (int i = 0; i < n; i++) {
         if (cor[i] == 0 && dfs(g, i, cor, res, &pos)) {
+            free(cor);
+            free(res);
             *tamanho = 0;
             return NULL;
         }
     }
+    free(cor);
     *tamanho = n;
     return res;
 }
 
-// 2. Ordenação Topológica Kahn
 int* ordenacao_topologica_kahn(GrafoLista *g, int *tamanho) {
     int n = g->num_vertices;
     int *grau = calloc(n, sizeof(int));
@@ -65,7 +65,10 @@ int* ordenacao_topologica_kahn(GrafoLista *g, int *tamanho) {
             if (--grau[p->vertice] == 0) res[fim++] = p->vertice;
     }
 
+    free(grau);
+
     if (fim < n) {
+        free(res);
         *tamanho = 0;
         return NULL;
     }
@@ -74,8 +77,12 @@ int* ordenacao_topologica_kahn(GrafoLista *g, int *tamanho) {
     return res;
 }
 
-// 3. Verifica se é DAG
 int eh_dag(GrafoLista *g) {
     int tam;
-    return ordenacao_topologica_dfs(g, &tam) != NULL;
+    int *res = ordenacao_topologica_dfs(g, &tam);
+    if (res) {
+        free(res);
+        return 1;
+    }
+    return 0;
 }
