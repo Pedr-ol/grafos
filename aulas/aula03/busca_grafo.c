@@ -2,19 +2,46 @@
 #include <stdlib.h>
 #include "grafo_lista.h"
 
-int topo = 0;
-
-void dfs(GrafoLista *g, int u, int *p, int *visitado){
+void dfs(GrafoLista *g, int u, int *visitado)
+{
     visitado[u] = 1;
-    p[topo++] = u; //Empilha vertice
-    printf("Empilha %i, visita %i\n", u+1, u+1);
+    printf("Empilha %i, Visita %i\n", u + 1, u + 1);
     No *no = g->lista[u];
-
-    while(no != NULL){
-        int v = no->vertices;
-        if(!visitado[v]) dfs(g, v, p, visitado); //Pilha recursiva
+    while (no != NULL)
+    {
+        int v = no->vertice;
+        if (!visitado[v])
+            dfs(g, v, visitado); // pilha de recursividade
         no = no->proximo;
     }
-    topo--; //Desempilha vertice
-    printf("Desempilha %i\n", u+1);
+    printf("Desempilha %i\n", u + 1);
+}
+
+void bfs(GrafoLista *g, int u, int *visitado)
+{
+    int fila[MAX_VERTICES];
+    int inicio = 0;
+    int final = 0;
+
+    visitado[u] = 1;
+    fila[final++] = u;
+    printf("Enfileira %i\n", u + 1);
+
+    while (inicio < final)
+    {
+        int i = fila[inicio++];
+        printf("Desinfileira %i, Visita %i\n", i + 1, i + 1);
+        No *no = g->lista[i];
+        while (no != NULL)
+        {
+            int v = no->vertice;
+            if (!visitado[v])
+            {
+                visitado[v] = 1;
+                fila[final++] = v;
+                printf("Enfilera %i\n", v + 1);
+            }
+            no = no->proximo;
+        }
+    }
 }

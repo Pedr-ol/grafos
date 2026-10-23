@@ -1,57 +1,55 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "grafo_lista.h"
 #include "busca_grafo.h"
+#include "ordenacao_topologica.h"
 
-int main(){
+int main()
+{
     GrafoLista *grafo = criar_grafo(5);
 
-    adcionar_aresta(grafo, 0, 1);
-    adcionar_aresta(grafo, 0, 2);
-    adcionar_aresta(grafo, 1, 3);
-    adcionar_aresta(grafo, 2, 3);
-    adcionar_aresta(grafo, 3, 4);
+    adicionar_aresta(grafo, 0, 1);
+    adicionar_aresta(grafo, 0, 2);
+    adicionar_aresta(grafo, 1, 3);
+    adicionar_aresta(grafo, 2, 3);
+    adicionar_aresta(grafo, 3, 4);
 
-    for(int i = 0; i<grafo->num_vertices; i++) {
-        printf("%i: -> ", i+1);
-        No *no = grafo->lista[i];
+    printf("Grafo nao orientado\n");
+    imprimir_grafo(grafo);
 
-        while(no != NULL){
-            printf("%i -> ", no->vertices + 1);
-            no = no->proximo;
-        }
-        printf("Null\n");
+    int visitado[MAX_VERTICES];
+    memset(visitado, 0, sizeof(visitado));
+    printf("Inicia dfs pelo vertice 1\n");
+    dfs(grafo, 0, visitado);
+    printf("\n");
+
+    memset(visitado, 0, sizeof(visitado));
+    printf("Inicia bfs pelo vertice 1\n");
+    bfs(grafo, 0, visitado);
+    printf("\n");
+
+    GrafoLista *digrafo = criar_grafo(4);
+
+    adicionar_arco(digrafo, 0, 1);
+    adicionar_arco(digrafo, 0, 2);
+    adicionar_arco(digrafo, 1, 3);
+    adicionar_arco(digrafo, 2, 3);
+
+    printf("Grafo orientado (Digrafo)\n");
+    imprimir_grafo(digrafo);
+
+
+    int ordem[MAX_VERTICES];
+    memset(visitado, 0, sizeof(visitado));
+    memset(ordem, 0, sizeof(ordem));
+
+    printf("Ordena com dfs\n");
+    ordenar_dfs(digrafo, visitado, ordem);
+
+    printf("Ordem topografica do digrafo\n");
+    for(int i = 0; i < digrafo->num_vertices; i++){
+        printf("%i ", ordem[i]);
     }
-    //BUSCA
-    int pilha[10];
-    int visitado[10];
-
-    memset(visitado, 0, sizeof(visitado));
-    printf("\n==Inicia dfs pelo vertice 1==\n");
-    dfs(grafo, 0, pilha, visitado);
     printf("\n");
-    
-    memset(visitado, 0, sizeof(visitado));
-    printf("\n==Inicia dfs pelo vertice 2==\n");
-    dfs(grafo, 1, pilha, visitado);
-    printf("\n");
-
-    memset(visitado, 0, sizeof(visitado));
-    printf("\n==Inicia dfs pelo vertice 3==\n");
-    dfs(grafo, 2, pilha, visitado);
-    printf("\n");
-    
-    memset(visitado, 0, sizeof(visitado));
-    printf("\n==Inicia dfs pelo vertice 4==\n");
-    dfs(grafo, 3, pilha, visitado);
-    printf("\n");
-
-    memset(visitado, 0, sizeof(visitado));
-    printf("\n==Inicia dfs pelo vertice 5==\n");
-    dfs(grafo, 4, pilha, visitado);
-    printf("\n");
-
-
     return 0;
 }

@@ -1,0 +1,19 @@
+graph {
+    a [shape="circle", color="blue"]
+    b [shape="circle", color="blue"]
+    c [shape="circle", color="blue"]
+    d [shape="circle", color="blue"]
+    e [shape="circle", color="blue"]
+    a--b [label="2"]
+    a--c [label="6"]
+    b--d [label="4"]
+    c--b [label="1"]
+    c--d [label="1"]
+    d--e [label="3"]
+    
+A->B: d(B)= d(a)+w(a,b)=0+2=2, pred(b)=a
+A->C: d(C)= d(A)+w(A,C)=> 0+6=6 > 2 => (), pred(C)=a
+B->D: d(D)= d(B)+w(B,D)=2+4=6, pred(d)=b
+B->C: d(C)= d(B)+w(B,C)=> 6 > 2+1=3 => d(C) = 3, pred(C)=B
+
+}
